@@ -1,0 +1,65 @@
+---
+kind: List
+apiVersion: v1
+id: kafka-setup
+items:
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: kafka
+    labels:
+      name: kafka-svc
+  spec:
+    ports:
+    - name: client
+      port: 9092
+      targetPort: 9092
+    selector:
+      name: kafka-pod
+- kind: ReplicationController
+  apiVersion: v1
+  metadata:
+    labels:
+      name: kafka-rc
+    name: kafka-rc
+  spec:
+    replicas: 3
+    selector:
+      name: kafka-pod
+    template:
+      metadata:
+        name: kafka-pod
+        labels:
+          name: kafka-pod
+      spec:
+        containers:
+        - name: kafka
+          image: 192.168.200.64:5000/drama/kafka:v1
+          resources:
+            limits:
+              cpu: 2
+              memory: 8Gi 
+          env:
+          - name: KAFKA_HEAP_OPTS
+            value: "-Xms4g -Xmx4g"
+          - name: KAFKA_JVM_PERFORMANCE_OPTS
+            value: "-XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35"
+          - name: ZOOKEEPER_CONNECT
+            value: "zookeeper:2181"
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          ports:
+          - containerPort: 9092
+            name: client
+          volumeMounts:
+          - name: data
+            mountPath: /kafka_data/data
+          - name: log
+            mountPath: /kafka_data/log
+        volumes:
+        - name: data
+          emptyDir: {}
+        - name: log
+          emptyDir: {}
