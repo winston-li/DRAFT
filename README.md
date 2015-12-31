@@ -1,4 +1,9 @@
 # DRAFT
+[![Travis Widget]][Travis] 
+
+[Travis]: https://travis-ci.org/winston-li/DRAFT
+[Travis Widget]: https://travis-ci.org/winston-li/DRAFT.svg?branch=master
+
 Distributed Resilient Analytic Framework Type
 
 ---
