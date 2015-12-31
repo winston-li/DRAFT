@@ -69,6 +69,7 @@ object StreamAnalyzer extends App with Logging {
     case x: Int if x == 1 => args(0)
     case _ => "local[*]"
   }
+  
 /*
   private def createKafkaProducerPool(conf: Option[Config]): GenericObjectPool[KafkaProducer] = {
     val producerFactory = new KafkaProducerFactory(conf)

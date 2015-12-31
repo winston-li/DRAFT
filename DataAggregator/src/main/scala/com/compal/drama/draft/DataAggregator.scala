@@ -1,7 +1,6 @@
 package com.compal.drama.draft
 
 
-
 import com.typesafe.config.{Config, ConfigFactory}
 import org.apache.spark.{Logging, SparkConf, SparkContext}
 import org.apache.spark.rdd.{RDD, PairRDDFunctions}
